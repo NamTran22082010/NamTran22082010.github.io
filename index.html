@@ -1,2 +1,58 @@
-<h1>Chào Nam Trần! Trang web của bạn đã hoạt động rồi nhé.</h1>
-<p>Đây là website chạy trên GitHub Pages.</p>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nam Trần | Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            animation: fadeIn 1.5s ease;
+        }
+        h1 { margin: 0; font-size: 2.5em; color: #4facfe; }
+        p { color: #cbd5e0; font-size: 1.1em; }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: #00f2fe;
+            border: none;
+            border-radius: 50px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #00f2fe; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>NAM TRẦN</h1>
+        <p>Developer | Tech Enthusiast | Student</p>
+        <hr style="width: 50px; border: 1px solid #4facfe; margin: 20px auto;">
+        <p>Chào mừng bạn đến với thế giới lập trình của tôi.</p>
+        <button class="btn">Kết nối với tôi</button>
+    </div>
+</body>
+</html>
